@@ -44,6 +44,8 @@ class PlanarManipulator2DOF:
                             init_func=init, blit=True, interval=int(self.Tp * 1000), repeat=False)
         plt.show()
 
+
+
     """
     Don't read the content below unless you finished the first two classes.
 
