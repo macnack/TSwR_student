@@ -1,4 +1,5 @@
 import numpy as np
+from models.manipulator_model import ManiuplatorModel
 from .controller import Controller
 
 
@@ -6,9 +7,18 @@ class MMAController(Controller):
     def __init__(self, Tp):
         # TODO: Fill the list self.models with 3 models of 2DOF manipulators with different m3 and r3
         # I:   m3=0.1,  r3=0.05
+        firstModel = ManiuplatorModel(Tp)
+        firstModel.m3 = 0.1
+        firstModel.r3 = 0.05
         # II:  m3=0.01, r3=0.01
+        secondModel = ManiuplatorModel(Tp)
+        secondModel.m3 = 0.01
+        secondModel.r3 = 0.01
         # III: m3=1.0,  r3=0.3
-        self.models = [None, None, None]
+        thirdModel = ManiuplatorModel(Tp)
+        thirdModel.m3 = 1.0
+        thirdModel.r3 = 0.3
+        self.models = [firstModel, secondModel, thirdModel]
         self.i = 0
 
     def choose_model(self, x):
