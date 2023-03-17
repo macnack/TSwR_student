@@ -15,8 +15,8 @@ class Poly3(TrajectoryGenerator):
         self.q_dot_1 = 0
         self.a_0 = self.q_0
         self.a_1 = self.q_dot_0 + 3 * self.q_0
-        self.a_2 = self.q_k 
-        self.a_3 = 3 * self.q_k - self.q_dot_1
+        self.a_3 = self.q_k 
+        self.a_2 = 3 * self.q_k - self.q_dot_1
 
     def generate(self, t):
         """
