@@ -17,16 +17,20 @@ class MMAController(Controller):
         self.i = 0
         self.Tp = Tp
         self.prev_x = np.zeros(4)
+        self.prev_u = np.zeros(2)
 
-    def choose_model(self, x, u):
+    def choose_model(self, x):
         # TODO: Implement procedure of choosing the best fitting model from self.models (by setting self.i)
-        #Euler forward estimation
-        x_dot = [ reg.model.x_dot(x, u) * self.Tp + x  for reg in self.models]
+        # Euler forward estimation
+        x_dot = [reg.model.x_dot(self.prev_x, self.prev_u)
+                 * self.Tp + self.prev_x for reg in self.models]
         error = [np.linalg.norm(x_hat - x) for x_hat in x_dot]
+        print("SELECT {}".format(self.i))
         self.i = error.index(min(error))
 
-
     def calculate_control(self, x, q_r, q_r_dot, q_r_ddot):
+        self.choose_model(x[:, np.newaxis])
         u = self.models[self.i].calculate_control(x, q_r, q_r_dot, q_r_ddot)
-        self.choose_model(x, u)
+        self.prev_x = x
+        self.prev_u = u
         return u
