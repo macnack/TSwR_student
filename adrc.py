@@ -11,20 +11,23 @@ from trajectory_generators.poly3 import Poly3
 from utils.simulation import simulate
 
 Tp = 0.001
-end = 5
+end = 5.0
 
 # traj_gen = ConstantTorque(np.array([0., 1.0])[:, np.newaxis])
-traj_gen = Sinusoidal(np.array([0., 1.]), np.array([2., 2.]), np.array([0., 0.]))
-# traj_gen = Poly3(np.array([0., 0.]), np.array([pi/4, pi/6]), end)
+#traj_gen = Sinusoidal(np.array([0., 1.]), np.array([2., 2.]), np.array([0., 0.]))
+traj_gen = Poly3(np.array([0., 0.]), np.array([pi/4, pi/6]), end)
 
-b_est_1 = None
-b_est_2 = None
-kp_est_1 = None
-kp_est_2 = None
-kd_est_1 = None
-kd_est_2 = None
-p1 = None
-p2 = None
+b_est_1 = 1
+b_est_2 = 1
+
+p1 = 20
+p2 = 20
+
+
+kp_est_1 = 16
+kp_est_2 = 16
+kd_est_1 = 32
+kd_est_2 = 32
 
 q0, qdot0, _ = traj_gen.generate(0.)
 q1_0 = np.array([q0[0], qdot0[0]])
@@ -39,25 +42,32 @@ eso2 = np.array(controller.joint_controllers[1].eso.states)
 
 plt.subplot(221)
 plt.plot(T, eso1[:, 0])
-plt.plot(T, Q[:, 0], 'r')
+plt.plot(T, Q[:, 0], '--r')
+plt.legend(['eso1','real'])
 plt.subplot(222)
 plt.plot(T, eso1[:, 1])
-plt.plot(T, Q[:, 2], 'r')
+plt.plot(T, Q[:, 2], '--r')
+plt.legend(['eso1','real'])
 plt.subplot(223)
 plt.plot(T, eso2[:, 0])
-plt.plot(T, Q[:, 1], 'r')
+plt.plot(T, Q[:, 1], '--r')
+plt.legend(['eso2','real'])
 plt.subplot(224)
 plt.plot(T, eso2[:, 1])
-plt.plot(T, Q[:, 3], 'r')
+plt.plot(T, Q[:, 3], '--r')
+plt.legend(['eso2','real'])
 plt.show()
 
 plt.subplot(221)
-plt.plot(T, Q[:, 0], 'r')
+plt.plot(T, Q[:, 0], '--r')
 plt.plot(T, Q_d[:, 0], 'b')
+plt.legend(['q','qr'])
 plt.subplot(222)
-plt.plot(T, Q[:, 1], 'r')
+plt.plot(T, Q[:, 1], '--r')
 plt.plot(T, Q_d[:, 1], 'b')
+plt.legend(['q_dor','qr_dor'])
 plt.subplot(223)
-plt.plot(T, u[:, 0], 'r')
+plt.plot(T, u[:, 0], '--r')
 plt.plot(T, u[:, 1], 'b')
+plt.legend(['u_0','u_1'])
 plt.show()

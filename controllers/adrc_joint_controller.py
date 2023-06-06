@@ -28,10 +28,11 @@ class ADRCJointController(Controller):
     def calculate_control(self, x, q_d, q_d_dot, q_d_ddot, idx):
         # TODO implement ADRC
         q, _ = x  # q, qdot
-
+        # Calculation b
         invM = self.model.M([q, _, 0, 0])
         invM = np.linalg.inv(invM)
         self.set_b(invM[idx, idx])
+        # print(self.b)
         # update ESO
         q_est, q_dot_est, f_est = self.eso.get_state()
         u_pd = self.pd_control.calculate_control(
