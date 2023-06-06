@@ -17,11 +17,19 @@ class ESO:
 
     def update(self, q, u):
         self.states.append(copy(self.state))
-        ### TODO implement ESO update
+        # TODO implement ESO update
         z_hat = self.state[:, np.newaxis]
-        state_dot = self.A @ z_hat + self.B * u + self.L @ (q - self.W @ z_hat)
-        self.state = self.state + self.Tp * np.reshape(state_dot, (state_dot.shape[0], ))
-        #shapes in numpy drives me crezy 
+        state_dot = np.zeros_like(self.A[0, :])
+        if isinstance(u, (np.ndarray, np.float64)):
+            if isinstance(u, np.ndarray):
+                state_dot = self.A @ z_hat + self.B @ u + \
+                    self.L @ (q - self.W @ z_hat)
+            else:
+                state_dot = self.A @ z_hat + self.B * \
+                    u + self.L @ (q - self.W @ z_hat)
+        self.state = self.state + self.Tp * \
+            np.reshape(state_dot, (state_dot.shape[0], ))
+        # shapes in numpy drives me crezy
 
     def get_state(self):
         return self.state
